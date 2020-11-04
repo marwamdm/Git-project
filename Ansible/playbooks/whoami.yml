@@ -1,0 +1,22 @@
+#
+#
+#
+# @autor DESIRE NTAMBIYE (desire.ntambiye@capgemini.com)
+# 2020-11-03
+#
+---
+- name: Qui suis-je ?
+  hosts: all
+  gather_facts: false
+  become: no
+
+  tasks:
+      - name: whoami
+        shell:
+            cmd: whoami
+        register : reponse
+
+      - name : montre la réponse
+        debug : 
+           msg : 'Voila qui tu est : {{reponse.stdout}}'
+...

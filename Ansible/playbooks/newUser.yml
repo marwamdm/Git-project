@@ -1,0 +1,19 @@
+#
+#
+# @autor DESIRE NTAMBIYE (desire.ntambiye@capgemini.com
+#
+# 2020-11-03 
+#
+
+---
+- name : Create a new user to all machines
+  hosts : all
+  become : yes
+
+  tasks: 
+
+    - name: user gets created
+      user:
+        name : desideri
+        state: present
+...

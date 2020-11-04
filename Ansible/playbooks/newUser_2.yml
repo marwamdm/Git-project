@@ -1,0 +1,25 @@
+#
+#
+# @autor DESIRE NTAMBIYE (desire.ntambiye@capgemini.com
+#
+# 2020-11-03 
+#
+
+---
+- name : Create a new user to all machines
+  hosts : all
+  become : yes
+
+  tasks: 
+
+    - name: Retrieve varibale from encrypted file
+      include_vars:
+        file: secret
+
+    - name: user gets created a new user  
+      user:
+        name : "{{username['desideri']['us_name']}}"
+        comment: "{{username['desideri']['us_descrip']}}"
+        password: "{{username['desideri']['passwrd']}}"
+        state: absent
+...

@@ -1,0 +1,13 @@
+# Vars for the group workers
+
+username :
+      desideri :
+        us_name : desideri
+        us_descrip : Test the user definition
+        passwrd : "{{ secret }}"
+
+nv_users : 
+  - deploy
+  - testDB
+  - devops
+  - dev

@@ -1,0 +1,15 @@
+[ubuntu]  
+Worker_Ubuntu 
+Worker_Ubuntu2 
+
+[redhat]
+Worker_RHEL
+Worker_RHEL2
+
+[ubuntu:vars]
+ansible_user = ubuntu
+
+[workers:children]
+ubuntu   
+redhat
+

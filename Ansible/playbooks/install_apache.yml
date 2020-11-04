@@ -1,0 +1,27 @@
+#
+# Installation du service apache sur tous les workers
+# 2020-11-04
+#
+
+- name: Installation et configuration du service apache
+  hosts: all
+  gather_facts: false
+
+  tasks:
+
+  - name: Installation du serveur Apache
+    package:
+      name: '{{ service_apache }}'
+      state: present
+ 
+  - name: Activation du serveur Apache
+    systemd:
+      name: '{{ service_apache }}'
+      state: started
+      enabled: yes
+
+  - name: Copie du fichier files/index.html
+    copy:
+      src: index.html
+      dest: /var/www/html/
+

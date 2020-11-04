@@ -1,0 +1,3 @@
+distrib: ubuntu
+service_apache: apache2
+port_apache: /etc/apache2/ports.conf

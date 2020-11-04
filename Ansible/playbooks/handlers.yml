@@ -1,0 +1,42 @@
+#
+# Let's say we want to restart the servers after adding users
+#(just for practice) 
+# @autor DESIRE NTAMBIYE (desire.ntambiye@capgemini.com)
+#
+# 2020-11-04 
+#
+
+---
+- name : Create a new user to all machines
+  hosts : all
+  become : yes
+  vars: 
+    redhat_users:
+      - toto
+      - redneck
+      - kathie
+
+  tasks: 
+
+    - name: Create ubuntu users using loop and condition  
+      user: 
+        name : "{{ item }}"
+        state : absent 
+      loop : "{{ nv_users }}"
+      when : "'ubuntu' in group_names"
+      notify: restart the service apache
+
+    - name: Create redhat users using loop and condition
+      user: 
+        name : "{{ item }}"
+        state: absent
+      loop: "{{ redhat_users }}"
+      when: "'redhat' in group_names"
+      notify: restart the service apache
+
+  handlers:
+    - name: restart the service apache
+      service:
+        name: "{{ service_apache }}"
+        state: restarted 
+...

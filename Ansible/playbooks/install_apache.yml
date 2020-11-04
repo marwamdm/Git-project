@@ -29,3 +29,6 @@
       src: index.html
       dest: /var/www/html/
 
+  - name: Afficher le system d'exploitation
+    debug:
+      msg : Voici l'OS de la machine {{ ansible_distribution }} {{ ansible_architecture }}

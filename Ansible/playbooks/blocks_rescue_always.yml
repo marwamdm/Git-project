@@ -1,0 +1,46 @@
+#
+#how blocks works : 
+#with blocks u can make a conditon trough many tasks
+#blocks: Defines the main tasks to run 
+#rescue: Defines the tasks to run if the tasks defined in the block clause fail
+#always: Defines the tasks that will always run independentky of the success or failure of the tasks difined in block and rescue clauses
+#
+#@autor DESIRE NTAMBIYE (desire.ntambiye@capgemini.com)
+#
+#
+#
+--- 
+
+- name : Utilisation de blocks, rescue et always
+  hosts: all 
+  gather_facts: yes
+  become: yes
+
+  tasks: 
+    - name : update the apache servers 
+
+      block: 
+        - name: What is going on ? message
+          debug: 
+            msg: "Updating Apache service, this is what we want to do"
+
+        - name: update Apache service
+          package:
+            name: "{{ service_apache }}"
+            state: latest
+
+      rescue:
+        - name: An error message
+          debug: 
+            msg: "Failled, this is what we do if what we wanted to do has failled"
+
+        - name: Restart the Apache service
+          service: 
+            name: "{{ service_apache }}"
+            state: restarted
+
+      always: 
+        - name : This will display no matter what happened before
+          debug: 
+            msg: "this message will display no matter what happened before"
+         

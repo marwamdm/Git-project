@@ -1,0 +1,21 @@
+#
+#
+#Discussing templating with jinja
+#@ autor DESIRE NTAMBIYE (desire.ntambiye@capgemini.com)
+#
+#
+#
+#
+--- 
+- name: Deploying files with Jinja template
+  hosts: all
+  become: true
+
+  tasks: 
+    - name : Deploy the message of the day template
+      template: 
+        src: motd.j2
+        dest: /var/www/html/index.html
+        owner: root
+        group: root
+        mode: "0644"

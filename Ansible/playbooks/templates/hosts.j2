@@ -1,0 +1,6 @@
+{# This is the template for ou /etc/hosts file in our workers nodes #}
+
+{% for host in groups['all'] %}
+{{ hostvars[host]['ansible_facts']['default_ipv4']['address'] }}  {{host}}
+{% endfor %}
+

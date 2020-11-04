@@ -4,7 +4,7 @@ Worker_Ubuntu2
 
 [redhat]
 Worker_RHEL
-Worker_RHEL2
+#Worker_RHEL2 (ce poste n'as access à l'internet)
 
 [ubuntu:vars]
 ansible_user = ubuntu
@@ -12,4 +12,3 @@ ansible_user = ubuntu
 [workers:children]
 ubuntu   
 redhat
-

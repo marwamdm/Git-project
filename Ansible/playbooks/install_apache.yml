@@ -2,10 +2,14 @@
 # Installation du service apache sur tous les workers
 # 2020-11-04
 #
+# @autor Desire NTAMBIYE (desire.ntambiye@capgemini.com)
+#
 
 - name: Installation et configuration du service apache
   hosts: all
-  gather_facts: false
+  gather_facts: yes
+  become: yes
+ 
 
   tasks:
 

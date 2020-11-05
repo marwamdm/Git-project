@@ -1,0 +1,56 @@
+TERRAFORM - GETTING STARTED with NED Bellavance
+_______________________________________________
+
+I) ABAOUT INFRASTRUCTURE AS CODE 
+--------------------------------
+
+Def: Provisioning infrastructure through software to achieve consistent 
+and predictable environments.
+-- through software
+-- consistance: 
+
+Core concepts
+-------------
+Defined in code | Stored in source control | Declarative or imperative
+| idempotent and consistent (Tf is idempotent)| Push or pull (terraform is a push type model) |
+
+
+declarative VS imperative
+Imperative => instructions one after another to tell te program what to do (key word is instructions)
+Declarative => The software has a an idea of how to make what u want 
+               you make configurations to specifie what u need exactly (key word is configuration)
+
+Idempotent : If u dont change ur config and u apply it again, Terraform will not make change to the infrastructure that exists
+
+
+The Benefits of using IaC
+-------------------------
+
+Automated deployment
+Consistent environments
+Repeatable process 
+reusable components
+Ducumented architecture
+
+to recap : IaC isn't scary
+           Manual processes are the enemy (mistakes, forget ...)
+
+
+II) DEPLOYING A TERRAFORM CONFIGURATION 
+---------------------------------------
+
+Automating infrastructure : what's the scenario ?
+Automating infra relies on : Provisioning resources, planning updates, using source control, reusing templates
+first : - provisoning resources 
+terraform is a single executable program. 
+checks the .tf files, Terraform has some plugins 
+have terraform state file. 
+
+Terraform files used is this course can be found here : 
+https://github.com/ned1313/Getting-Started-Terraform.git
+
+After writting you config, u run 
+#> terraform init  => this is to download the plugins of the provider u want to use 
+#> terraform plan  --output file_name.tfplan => Terraform will show u what it is planning to do 
+if u are happy of what terraform is going to set up, u run 
+#> terraform apply

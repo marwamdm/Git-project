@@ -155,19 +155,19 @@ several broad categories
 
 Common Function Categories 
 * Numeric 
-exemple: min(3,4,94,2,42,34)
+example: min(3,4,94,2,42,34)
 
 * String
-exemple: lower(TEST)
+example: lower(TEST)
 
 * Collection (list and maps)
-exemple: merge(map1,map2)
+example: merge(map1,map2)
 
 *Filesystem 
-exemple: file(path)
+example: file(path)
 
 *Ip network
-exemple: cidrsubnet()
+example: cidrsubnet()
 
 *Date and time
 timestamp()
@@ -181,3 +181,31 @@ depends_on : Defines dependences between resources that are not obvious to Terra
 count : a way to loop through defined number 
 for_each : a way to loop through a map or a list
 provider : U can define more than one provider to deploy your config through multiple cloud providers
+
+VI) USING VARIABLES AND FUNCTIONS IN DEPLOYMENTS
+------------------------------------------------
+Variables and multiple states
+store secrets in a safe place
+
+Variables in Terraform consists of: 
+Name (required)
+Type (optional)
+defaut (optional)
+
+Multiple sources of variables : 
+ - file, environment variable, var option
+Overriding variables and precendence
+Environment(less prior), File (will override env vars), command line (will override all other source)
+
+examples: 
+#specify default variable and type
+variable "environment_name" {
+  type = string
+  default = "development"
+}
+
+#Specify variable in file 
+environment_name = "qa/uat"
+
+#Specify variable in-line 
+terraform plan -var 'environment_name=production"

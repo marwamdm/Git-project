@@ -54,3 +54,35 @@ After writting you config, u run
 #> terraform plan  --output file_name.tfplan => Terraform will show u what it is planning to do 
 if u are happy of what terraform is going to set up, u run 
 #> terraform apply
+
+III) UPDATING THE CONFIGURATION WITH MORE RESOURCES
+---------------------------------------------------
+second : - Planning updates
+
+Terraform state is in JSON format (never edit this file yourself)
+contains resources mappings and metadata
+Locking (a way for terraform to signal that the state file is in a period of flux, and nobody else should be trying to make changes to the infra
+Location : 
+  - Local (default) (good for dev and studies)
+  - Remote: AWS, Azure, NFS, Terraform Cloud (suits in production)
+Workspaces (each workspaces have it's own file)
+
+First rule of Terraform : Make all changes in Terraform
+(Once u've deployed a configuration, if u want to continue managing that config with terrafom, then don't make changes manually)
+
+Terraform planning : 
+Inspect state 
+dependency graph
+Additions, updates , and deletions
+Parallel execution 
+Save the plan output
+
+We are going to add a VPC to our previous config
+Adding a VPC will resultat :
+resource "aws_vpc" "vpc" {}
+resource "aws_internet_gateway" "igw"{}
+resource "aws_subnet" "subnet1" {}
+resource "aws_route_table" "routea" {}
+resource "aws_route_table_association" "routea-subnet1" {}
+
+

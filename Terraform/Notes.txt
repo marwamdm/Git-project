@@ -209,3 +209,12 @@ environment_name = "qa/uat"
 
 #Specify variable in-line 
 terraform plan -var 'environment_name=production"
+
+VII) USING MODULES FOR COMMON CONFIGURATIONS
+--------------------------------------------
+
+Modules make code reuse easier
+Modules consist of Outputs and process flow
+U can find modules to do common task on terraform registriy
+https://registry.terraform.io
+

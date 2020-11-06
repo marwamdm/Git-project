@@ -1,0 +1,44 @@
+---
+- name: marwa playbook
+  pre_tasks:
+  - name: before starting the tasks
+    debug: msg="before starting the tasks"
+  tasks:
+  - name: update packages RHEL
+    yum:
+      name: '*'
+      state: latest
+    when: ansible_os_family == "RedHat"
+
+  - name: update packages Ubuntu
+    apt:
+      name: '*'
+      state: latest
+    when: ansible_os_family == "Ubuntu"
+
+  - name: install git RHEL
+    yum:
+      name: git
+      state: present
+      update_cache: yes
+    notify: "Problem git"
+    when: ansible_os_family == "RedHat"
+
+  - name: install git Ubuntu
+    apt:
+      name: git
+      state: present
+      update_cache: yes
+    notify: "Problem git"
+    when: ansible_os_family=="Ubuntu"
+    
+
+  post_tasks: 
+  - name: post task msg
+    debug: msg="This is my pre_tasks message"
+
+  handlers:
+  - name: first_hundler
+    debug: msg="Problem with git intsallation"
+    listen: "Problem git"
+    

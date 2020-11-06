@@ -86,3 +86,98 @@ resource "aws_route_table" "routea" {}
 resource "aws_route_table_association" "routea-subnet1" {}
 
 
+IV) CONFIGURING RESOURCES AFTER CREATION 
+-----------------------------------------
+
+Country grammar with Terraform 
+Get started with provisioners: 
+
+the terraform grammar
+    Terraform Syntax :
+    HashiCorp configuration language
+    uses configuration syntax and expressions
+    supports conditionals, functions and templates
+
+- Blocks : 
+#the basic format of a block is 
+block_type label_one label_two {
+  key value pairs, 
+  embedded_block {
+    key value pairs 
+  }
+}
+
+-Object types :
+befor Terraform 0.12, there use to be juste one type of object "string"
+since version 0.12 we've got more type 
+number (int, and floats)
+bool
+list = [ "first-element-at-index-0" "second-element"]
+map = {name = "my_name", age = 30, likes_food = true}
+
+-References :
+#keyword reference :
+var.something
+aws_instance.its_label.property
+local.name_of_value.something
+module.name_of_the_resource.locations
+#Interpolation: 
+resource_name = "name-${var.resource_type}"
+
+when u want to get a #string, number and bool
+just write it's name : local.instance_count 
+when u manipulating lists and maps 
+local.instance_list[index]
+local.instance_map["name"]
+
+Terraform provisioners :
+Last resort => use another software like ansible, or chef
+Local or remote
+Creation or destruction
+Multple provisioners on the same resource
+
+some provisioner : 
+file => to copy file (and directories) to the instanse
+local-exec => script that will run localy
+remote-exec => script on a remote machine 
+
+V) ADDING A NEW PROVIDER TO UR CONFIGURATION
+--------------------------------------------
+
+Exploting functinos and the CLI
+Set multiple cloud providers
+
+Most useful function are built-in to Terraform 
+but u can create ur own function like 
+fun_name(arg1,arge2,arg3,...)
+Test in terraform console
+several broad categories
+
+Common Function Categories 
+* Numeric 
+exemple: min(3,4,94,2,42,34)
+
+* String
+exemple: lower(TEST)
+
+* Collection (list and maps)
+exemple: merge(map1,map2)
+
+*Filesystem 
+exemple: file(path)
+
+*Ip network
+exemple: cidrsubnet()
+
+*Date and time
+timestamp()
+
+Resource arguments:
+-------------------
+
+|depends_on | count | for_each | provider |
+
+depends_on : Defines dependences between resources that are not obvious to Terraform (which is the cas in most of the times)
+count : a way to loop through defined number 
+for_each : a way to loop through a map or a list
+provider : U can define more than one provider to deploy your config through multiple cloud providers

@@ -51,7 +51,7 @@ https://github.com/ned1313/Getting-Started-Terraform.git
 
 After writting you config, u run 
 #> terraform init  => this is to download the plugins of the provider u want to use 
-#> terraform plan  --output file_name.tfplan => Terraform will show u what it is planning to do 
+#> terraform plan  -out file_name.tfplan => Terraform will show u what it is planning to do 
 if u are happy of what terraform is going to set up, u run 
 #> terraform apply
 
@@ -217,4 +217,49 @@ Modules make code reuse easier
 Modules consist of Outputs and process flow
 U can find modules to do common task on terraform registriy
 https://registry.terraform.io
+
+===============================================================================
+
+TERRAFORM DEEP DIVE With NED BELLAVANCE
+_______________________________________
+
+Importing existing infrastructure
+Troubleshooiting errors
+CICD pipeline integration
+Configuration management 
+
+Terraform Cloud => SaaS offering that is used to store remote state, remote execution, hold Variable and secret storage, Source control integration
+(not discussed in the course)
+
+Working with existing resources : 
+---------------------------------
+
+the purpers is to automate the things. 
+*import existing resources
+*Managing state data
+*Workspaces and collaboration
+*Data sources and templates
+*Adding a CI/CD pipeline
+*Integrate with configu managers (with ansible)
+
+I) Impoting existing resources
+------------------------------
+
+when u decide to use terraform, they may be some exisiting resources that u want to include ! 
+"greenfield is the" 
+
+No automatic import yet (have to import manualy)
+update configuration to include resources
+identifiers from provider and configuration 
+add new resources to the state
+
+import syntax: 
+
+terraform import [options] ADDR ID 
+
+Scenario: We've created a VPC with two subnets in it using terraform
+then, run the script to create additionals subnets without using terrafom
+See JuniorAdminIssue.ps1 or junior_admin.sh
+the we will import those changes to be managed with terraform 
+
 

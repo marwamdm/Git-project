@@ -262,4 +262,7 @@ then, run the script to create additionals subnets without using terrafom
 See JuniorAdminIssue.ps1 or junior_admin.sh
 the we will import those changes to be managed with terraform 
 
+II) Managing State in Terraform 
+-------------------------------
+
 

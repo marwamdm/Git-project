@@ -264,5 +264,56 @@ the we will import those changes to be managed with terraform
 
 II) Managing State in Terraform 
 -------------------------------
+State data exploration 
+Backend options for state data
+Migrating state data
 
+Terraform state commands : 
 
+#> terraform state list => List objects in state data
+#> terraform state show => Show details about an object
+#> terraform state mv => move an item in state
+#> terraform state rm => remove an item from state
+#> terraform state pull => output current state to stdout
+#> terraform state push => update remote state from local 
+
+Backends :
+State data is stored in backends 
+Backend must be initialized 
+Partial configurations are recommendend 
+interpolation is note supported (can't user variable)
+
+* # basic backedn configuration 
+terraform {
+  backend "type" {
+          # Backend info
+          # Authentication info
+          }
+ }
+#Usual backends : Consul, AWS S3, Azure storage, google cloud storage
+
+Consul is Key/value based architect (can store JSON files)
+
+III) Creating and using Data sources and templates :
+----------------------------------------------------
+Data source types 
+config from external sources
+Templates,
+
+Example data sources
+
+-http data source
+
+data "http" "my_ip" {
+  url = "http://ifconfig.me"
+}
+
+using the response 
+data.http.my_ip.body
+
+-Consul data source
+data "consul_kyes" "networking" {
+  key { 
+    name = "vpc_cidr_range"
+    path = "networking/config/vpc/cidr_range"
+    default = "

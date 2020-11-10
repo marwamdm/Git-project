@@ -1,0 +1,33 @@
+##########################################################
+# Creating Persistent volume  for drupal app ad the DB   #
+# @autor Desire NTAMBIYE (desire.ntambiye@capgemini.com) #
+##########################################################
+
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: drupal-mysql-pv
+spec: 
+  accessModes: 
+    - ReadWriteOnce
+  capacity:
+    storage: 5Gi
+  hostPath:
+    path: /drupal-mysql-data
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: drupal-pv
+spec: 
+  accessModes: 
+    - ReadWriteOnce
+  capacity:
+    storage: 5Gi
+  hostPath:
+    path: /drupal-data
+
+   

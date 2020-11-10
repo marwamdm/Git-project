@@ -1,0 +1,6 @@
+This is the first episode of the GAME OF PODS 
+we are going to create a drupal CMS based on two services 
+the main drupal application and mysql database as backend
+
+you can find the whole game of pod at this link: 
+https://kodekloud.com/p/game-of-pods-game

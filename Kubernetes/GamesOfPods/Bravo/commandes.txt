@@ -1,0 +1,47 @@
+##########################################################
+# List of the command to run in the cluster              #
+# @autor Desire NTAMBIYE (desire.ntambiye@capgemini.com) #
+##########################################################
+
+kubectl get nodes
+ssh node01
+mkdir /drupal-data /drupal-mysql-data
+ls /
+exit
+
+############ Check ###################
+
+      #use vim to create the persistentVolumes.yml file 
+kubectl create -f persistentVolumes.yml
+kubectl get pv  
+
+
+############ check ###################
+
+      #use vim to create the persistentVolumeClaims.yml file
+kubectl create -f persistentVolumeClaims.yml
+kubectl get pvc 
+
+
+
+      #Create secret with this command
+kubectl create secret generic drupal-mysql-secret \
+--from-literal=MYSQL_ROOT_PASSWORD=root_password \
+--from-literal=MYSQL_DATABASE=drupal-database \
+--from-literal=MYSQL_USER=root
+
+kubectl get secrets
+kubectl describe secrets drupal-mysql-secret
+
+############## Check #################
+
+       #Use vim to create the drupal-mysql.yml file 
+kubectl create -f drupal-mysql.yml
+kubectl get pods 
+
+     #Use vim to create drupal.yml file 
+kubectl create -f drupal.yml
+kubectl get pods
+kubectl get services
+kubectl get service drupal-service
+

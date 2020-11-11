@@ -1,0 +1,17 @@
+##########################################################
+# Creating the volume claim for the app                  #
+# @autor Desire NTAMBIYE (desire.ntambiye@capgemini.com) #
+##########################################################
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name : data-pvc
+spec: 
+  accessModes: 
+    - ReadWriteMany
+  resources:
+    requests: 
+      storage: 1Gi
+  volumeName: data-pv
+  

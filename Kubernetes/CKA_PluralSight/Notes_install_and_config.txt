@@ -1,0 +1,147 @@
+CHAPITER I . K8s INSTALLATION AND CONFIGURATION FUNDAMENTALS  by Anthony NOCENTINO
+----------------------------------------------------------------------------------
+
+I) Exploring the k8s architect
+_______________________________
+install on promise and on the cloud 
+
+What is Kubernetes : Is container orchestrator, it's job is to start and stop container based on some specifications 
+Manages workload Placement 
+Infrastracture Absatraction 
+Desired state (to make sure that the system is in the desired state)
+
+Benefits : 
+Speed of deployment 
+Ability to absord change quickly 
+Ability to recover quickly
+Hide complexity in the clouster
+
+Kubernets principles:
+Keep the system in desired state (Declaration configuration)
+Controllers (Control loop)
+there is One Master (API server)
+
+Kubernetes API Objects : 
+------------------------
+The main ones :
+ Pods  (the moste baisc unit of work in k8s), (Pods ar Ephemeral, once deleted, it s fone forever)
+ Controllers (it's role is to control the pod and ansure that the system is in the desired state)
+    -ReplicaSet (number of replicas)
+    -Deployment (manage rollout of replicatSet)
+    -Nodes, Endpoints .....etc 
+ Services (Adds persistency to our ephemeral world)(Networking abstraction for the pods)
+      (provide IP and DNS name automatically) 
+ Storage
+    Volumes (hard disk)
+    Persistent Volume
+    Persistent Volume claim
+
+Cluster Components:
+-------------------
+* Master (Api Server, Cluster store, Scheduler, Controller manger) <---> (kubectl)
+* Node  (Kubelet, kube-proxy, container runtime)
+* Scheduled/add ons (pods data provides services to the cluster)
+    (DNS and engress)
+
+Kubernetes Networking requirements
+----------------------------------
+rules: 
+- All pods can communicate with each other on all Nodes
+- All Nodes can communicate with all pods
+- No Network Address Translation (NAT) is needed
+
+II) Installing and confifuring Kubernetes
+__________________________________________
+
+Installation considerations: 
+Where to install k8s ? 
+Cloud : 
+       - IaaS - Virtual Machines (u manage everthing) 
+       - PaaS - EKS, AKS or others (loose in flexibility)
+On-premise 
+       - Bare metal solution 
+       - Virtual Machinces 
+get some advise from : https://kubernets.io/docs/setup/pick-right-solution/
+
+Cluster Networking ? 
+Scalability ?
+High Availability ? 
+Disaster Recovery ? 
+
+Installation Methods : Desktop 
+                       Minikube
+                       kubeadm 
+                       from scratch (the hard way)
+
+Networking Ports: 
+Master :
+| Component   |  Ports (tcp) | Used by |
+  API Server	   6443           All
+   etcd          2379-2380        API/etcd
+   Scheduler     10251             Self
+   Controller M   10252            Self 
+   kubelet        10250           Control plane
+
+Nodes : 
+   Kubelet         10250         control plane 
+  NodePort         30000-32767       All
+
+
+Building Cluster: 
+Installing k8s from a repo (apt or yum)
+create the cluster 
+configur pod netwoking 
+join nodes to cluster 
+
+Riquered packages : to be installed on all nodes including the master node 
+kubelet
+kubeadm
+kubectl (yes event kubectl)
+Container runtime 
+(note that u have to disable swap)
+
+Boostrapping a cluster with kubeadm
+-----------------------------------
+kubeadm init => Pre-flight checkes, create certificate authority, Generates kubeconfig files, generates static pods manifests, starts up the control plane, taints the mastert, generetes a bootstrap tocken
+                starts add-on pods: Dns and kube-proxy (this whole process is customizable)
+
+Install pod overlay networking : 
+* Flannel -Layer 3 virtaul network
+* Calico - Layer 3 policy based traffic
+* Weave Net multi-host Docker network 
+and other more solutions are avaible
+
+III) Working with kubeclt cluster 
+_________________________________
+
+using kubectl : 
+
+Primary CLI tool 
+Control the k8s cluster 
+  Operations : what u want to do 
+  Resources : to what
+  output : if there's output, its format 
+
+#> kubectl apply/create ->create resources
+#> kubectl run  -> Start a pod from a image
+#> kubectl explain -> documentation of resources
+#> kubectl delete -> delete resource(s)
+#> kubectl get -> lists resources 
+#> kubectl describe -> detailed resrouce information
+#> kubectl exec -> execute a command on a container 
+#> kubectl logs -> view logs an a container
+
+To liste all the API object 
+#> kubectl api-resources 
+
+### Auto completion 
+sudo apt-get install bash-completion 
+echo "source <(kubectl competion bash)" >> ~/.bashrc
+source ~/.bashrc
+
+Application Deplyement in K8s
+-----------------------------
+Imperative (applies at only on object at time) 
+Declarative (Define the desired state in code, Manifest)
+
+

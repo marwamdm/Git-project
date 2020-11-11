@@ -1,0 +1,16 @@
+##########################################################
+# Creating Persistent volume  for the WebApp             #
+# @autor Desire NTAMBIYE (desire.ntambiye@capgemini.com) #
+##########################################################
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: data-pv
+spec:
+  accessModes: 
+    - ReadWriteMany
+  capacity: 
+    storage: 1Gi
+  hostPath:
+    path: /web

@@ -1,0 +1,5 @@
+This is the first episode of the GAME OF PODS 
+This episode is about troubleshouting Nodes and Deploying files 
+
+you can find the whole game of pod at this link: 
+https://kodekloud.com/p/game-of-pods-game

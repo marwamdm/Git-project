@@ -1,0 +1,40 @@
+##########################################################
+# Creating the pod for gop-fileserver and the service   #
+# @autor Desire NTAMBIYE (desire.ntambiye@capgemini.com) #
+##########################################################
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: gop-fileserver
+  labels:
+    name: gop-fileserver
+spec:
+  containers:
+  - name: gop-fileserver
+    image: kodekloud/fileserver
+    volumeMounts:
+      - mountPath: /web
+        name: data-store
+  volumes:
+    - name: data-store
+      persistentVolumeClaim: 
+        claimName: data-pvc
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels: 
+    app: gop-fs-service
+  name: gop-fs-service
+spec:
+  ports: 
+    - port: 8080
+      protocol: TCP
+      targetPort: 8080
+      nodePort: 31200
+  selector: 
+    app: gop-fileserver
+  type: NodePort

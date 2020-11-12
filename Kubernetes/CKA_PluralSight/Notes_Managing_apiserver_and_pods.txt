@@ -1,0 +1,74 @@
+Digging into Kubernetes API Server
+Labels, annotations and namespaces
+primary workload construct-the pod
+
+I) Using the kubernetes API
+___________________________
+
+k8s API and API server : 
+single surface area over the resources in a data center
+Api Server is a client/server Architecture, a RESTful API over HTTP using JSON
+Api Server itself is Stateless so, serialized and persisted in the cluster store
+
+kubernetes API objects: 
+These are the persistent entities in k8s representing the state of the system
+Objects are organized by: 
+Kind : Pod, Service, Deployment, ...
+Group: Core, Apps, Storage, ...
+Version: v1, beta, alpha
+
+Basic Manifest - Pod : 
+you create a yaml file with the followings :
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: name-of-the-pod
+spec: 
+  containers: 
+    - name: name-of-container
+      image: nginx 
+
+And the u user 
+kubectl apply -f filename.yaml 
+
+Let's see how to explore an API object: a pod for example, 
+kubectl api-resources | more -> this will list all the api aboject available in your k8s
+(it also show to wich kind and group the belong)
+
+kubectl explain pods | more -> this will display more information about pods
+kubectl explain pods.spec | more -> U can view the more info about a specific object block
+kubeclt explain pods.spec.containeres | more -> as u go deep to get more information 
+
+API Groups, Organization of resources:
+--------------------------------------
+we have two high leval groups : 
+
+* Core API (Legacy group): 
+Pod, Node, Namespace, PersistentVolume, PersistentVolumeClaim (the most used ones)
+
+* Named API Groups :
+apps -> Deployment etc ..
+storage.k_s.io -> StorageClass
+rbac.authorization.k8s.io -> Role
+
+
+API Versioning : 
+----------------
+Api is versioned independently of the k8s version itself
+
+versions are : 
+Alpha --> experimental 
+Beta --> Pre-release
+Stable --> General Availability
+
+#A list of the objects available in an API group
+kubectl api-resources --api-group=apps
+
+To create a deployment create the file deployment.yml (can have any name), and then run 
+kubectl create -f deployment.yml 
+
+
+
+
+

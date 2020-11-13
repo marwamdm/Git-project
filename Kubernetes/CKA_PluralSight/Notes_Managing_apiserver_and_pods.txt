@@ -69,6 +69,118 @@ To create a deployment create the file deployment.yml (can have any name), and t
 kubectl create -f deployment.yml 
 
 
+II) Managing k8s with labels, annotations and Namespaces : 
+__________________________________________________________
 
+Organizing object in k8s with: 
+Namespaces 
+Labels
+Annotations 
 
+* Namespaces : 
+The offer the ability to subdivide a cluster and its resources into a virtual cluster
+Resources isolation (put some virtual boundaries inside a cluster)
 
+Advantages of namespaces:
+Namespaces are a security boundary for RBAC
+Naming boundary
+An Object can only belong to one namespace
+
+When u install k8s, there are 3 namespaces created automaticaly
+Default 
+kube-public : used to store the shared objects in the cluster like ConfigMaps
+kube-system : store system pods like api-server, 
+
+U can create ur namespace and add object in it 
+kubectl get namespaces  -> to see all the name spaces 
+
+imperative way to create namespace
+kubectl create namespace itsname
+
+if u delete a namespace, all the resources inside are deleted as well
+
+* Labels : 
+Used to organize resources like pods, nodes and more 
+Label selectors are used to select/query Objects 
+Return collections of Objects that stisfy search conditions
+Enables u to perform oparations on a collection of resources 
+
+Adding and editing labels: 
+kubectl label pod nginx tier=PROD app=v1  (adding)
+kubectl label pod nginx tier=DEBUG app=v1 --overwrite (Editing)
+kubectl label pod nginx app- (removing)
+
+Quering using lables and selectors 
+
+kubectl get pods --show-labels (to see all the labels)
+kubectl get pods --selector  tier=PROD
+kubectl get po -l 'tier in (prod,qa)'
+
+Annotations : 
+-------------
+Used to add additional information about ur cluster resources
+Mostly used by people or tooling to make decisions 
+Saves you from having to write integrations to retrieve data from extenal data sources
+
+The different between label and annotations is that 
+annotations can not be used to query/select pods or other resources
+Annotations are used for other purposes , on value can hold data up to 256KB 
+
+Adding and editing annotations : 
+kubectl annotate pod nginx-pod owner=name
+kubectl annotate pod nginx-pod owner=OtherName --overwrite
+
+III) Running and managing Pods : 
+_______________________________
+
+* Understanding Pods : 
+A pod is a wrapper around a container based application
+A pod can contain one or more containers (but usualy one pod holds one container)
+A pod have resources 
+is the smolest unit of scheduling 
+
+To run a command in a pod u run 
+kubectl exec -it podName --container containerName -- /bin/bash
+
+to mapp a port run 
+kubectl port-forward pod podName LOCALPORT:PODPORT
+
+Pod LifeCycle :
+---------------
+
+Creation -> Running -> Termination
+
+*Creation, two ways : Administratively or by Controller
+*Running : Scheduled to a Node
+*Termination: there are many reasons that can lead to a termination of a pod 
+u have to keep in mide that no pod is redeployed as it is, it will be a new pod that will be created
+
+When stopping a pod, there is a grace period timer to let the process terminate itself, (signal SIGTERM)
+by default the grace periode is 30 seconds 
+u can change the grace period by this command 
+#> kubectl delete pod --grace-period=<seconds>
+
+Persistency of Pods: 
+As a pod can never be redeployed (it is actualy recreated), 
+for persistency, u do 
+Configuration is managed externally : 
+Pod manifests, secrets and ConfigMaps
+Passing environment variables into containers
+Data persistency with external volumes
+
+Defining Pod Health
+Livenessprod
+Readnessprod 
+
+Types of Diagnostic checks for Probe
+Exec ==> Process exit code
+tcpSocket ==> Succesfully open a port
+httpGet ==> Executes a http request and checks the return (ok if it is 200=> and <400
+
+Configuring container probes 
+* initialDelaySeconds: Number of seconds after the container has started before running container probes
+* PeriodSeconds : Probe interval, default 10 seconds
+* timeoutSeconds : Probe timeout, default 1 sec
+* failureThreshold : number of missed checks before reporting failure, default 3
+* successThreshold: number of successed checks before reporting up again, default 1
+ 

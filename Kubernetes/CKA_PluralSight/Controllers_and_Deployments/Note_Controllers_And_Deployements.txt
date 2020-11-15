@@ -1,0 +1,171 @@
+I) Using controllers to Deploy Applications and Deployment Basic :
+__________________________________________________________________
+
+Kubernetes Principles : 
+----------------------
+Desired State -> Controllers -> One Master (the APIServer)
+
+Controller Manager : 
+Kube-controller-manager 
+cloud-controller-manager(for the cloud providers)
+
+Controller Operations: 
+Wath State
+Operations and submet to the apiServer
+
+* Two types of controllers : 
+---------------------------
+- Pod Controllers : 
+  ReplicaSet
+  Deployment
+  DeamonSet
+  StateFulSet
+  Job 
+  CronJob
+- Other controllers
+  Node controller
+  Service
+  Endpoint 
+  Many more....
+
+Deployment :
+-----------
+It is used to provide declarative updates to replicaSets and their constituent pods 
+Orchestrate and managing application state (rolling update ...)
+==> Creating, updating and scaling 
+
+Requiere elements to creating deployments: 
+Selector; matchLabels or matchExpressions 
+Replicas
+pod template
+
+Understanding ReplicaSets : 
+---------------------------
+A replicaset deploy a defined number of pods in a cluster and ansures that number of pod are online and running 
+It consists of a Selector, number of replicas( of pods) and a pod templete
+Generally, u don't create replicasets directly, use Deployments instead
+
+ReplicaSets or Deployments ? 
+---------------------------
+Deployments to manager our replicaSets, 
+ReplicaSets are the building blocks of Deployments
+
+
+
+II) Maintaining Applocations with Deployments :
+_______________________________________________
+
+Configuring and managing application state with Deployments 
+- Updating Deployments
+- Controlling Rollours
+- Scaling Applications
+
+* Updating a Deployement: 
+-------------------------
+
+Anything that changes the pod template in a deployment, Triggers a rolling update. 
+
+U can trigger updates by: 
+- running a command imperatively:
+example: 
+kubectl set image deploy hello-world-match hello-world=hello-app:2.0
+
+- editing the deployment : 
+example:  
+kubectl edit deployment hello-world 
+
+- editing your yml file and run : 
+kubectl apply -f <fileName.yml> --record
+
+Checking Deployment Status : 
+kubectl rollout status deployment <deploymentName>
+kubectl describe deployment <deploymentName> -> Deployment Status 
+   --Complet -> all update work is finished
+   --Progressing -> update in flight
+   --Failed -> update could not complete
+
+Using Deployments to change state: 
+Update strategy: these help to manage the transitions between two version
+
+Controls pods rollout: 
+* RollingUpdate (Default)
+  => A new replicaSet Starts scalling up and the old replicaSet starts scaling down
+* Recreated 
+  => Terminates all pods in the current replicaSet, set prior to scaling up the new replicat
+ (this is used when apllications don't support running different versions concurrently)
+
+
+Controlling the rollingUpdate Strategy: 
+- maxUnavailable : Ensures only a certain number of Pods are unavailbe being updated
+- maxSurge : Ensure that only a certain number of Pods are created above the desired number of pods 
+
+*Successfully controlling deployment rollouts :
+Update strategy in a Deployment Spec
+Readiness probes in the pod template Spec
+
+Deployments Tips : 
+------------------
+Control your rollouts with an Update stragegy appropriate for ur application
+Always use readiness Probes for ur application 
+use the --record option to leave a trail of the rollout
+
+III) Deploying and maintaining applications with DeamonSets and Jobs
+_______________________________________________________________________
+Additonal controllers in k8s:
+* DeamonSets
+* Jobs and CronJobs
+* StatefulSets
+
+Understanding DaemonSet: 
+-----------------------
+Ensures that all or some Nodes run a copy of a Pod
+Effectively an init daemon inside the cluster
+
+Example of workloads that may use deamonsets:
+kube-proxy for network services
+log collectiors
+Metric servers
+Resource monitoring agents
+Storage deamons
+
+One pod will be scheduled to each worker node in a cluster by default-scheduler (not to the master node)
+As nodes are added to the cluster, they will get a pod
+you can control which nodes get pods by node selector, labeling the nodes
+
+DaemonSet update strategy: 
+RollingUpdate
+OnDelete
+
+Jobs in k8s:
+------------
+Jobs create one or more Pods
+Jobs run a program in a container to completion
+Jobs Ensure that the specified number of Pods complete successfully
+
+Workload examples: 
+ad-hoc
+Batch
+Data oriented tasks
+
+Jobs Lifecycle: 
+Jobs are tasks that we need to ensure run to completion, so 
+when a job completes successfully
+  - Its status is set to completed
+  - The job obect remains
+  - the pods are not deleted
+
+StatefulSets: 
+-------------
+StatefulSets Capabilities: 
+Naming, Storage, Headless Service
+
+StatefulSets enables stateful applications to be managed by a controller
+Workloads examples: 
+Database workloads
+Caching servers
+
+
+
+
+
+

@@ -1,0 +1,156 @@
+I) Configuring and managing storage in kubernetes
+__________________________________________________
+
+* Configuring and managing storage in k8S
+* Configuration as Data - Environment variables, Secrets and configMaps
+* Managing and Controlling the k8S Scheduler 
+
+- Storage : 
+_ Persistent Storage and Containers : 
+
+Volume : in the pod spec
+-------------------------
+Persistent volume : physical volume in the node 
+Persistent volume claim : requesting a volume in the cluster
+Storage Class : A way of groupping storage together (make collections)
+
+Volumes:
+Volumes are parts of pods,so 
+the off implementation details for the storage. 
+the challenging part ...
+ - Sharing code
+ - Volumes have the same lifecylce as the pod 
+so u will need to use a persistent volume claim to persiste data in that volume
+
+Persistent Volumes: api object 
+-----------------------------
+Administrator defined storage in the cluster
+For more information about persistent volumes : https://kubernetes.io/docs/concepts/storage/persistent-volumes/
+Three catégories of pv
+Networked : NFS, AzureFile
+Block : Fibre Channel, iSCSI 
+Cloud : aws EBS, AzureDisk, gcePersistentDisk
+
+Persistent volumes claims: api object 
+--------------------------------------
+A request for storage by a user 
+size,access Mode, storage Class
+Enable portability of ur application configuration
+there are 3 access Modes: 
+ReadWriteOnce (rwo) : One node can mount a volume for both read and write access
+ReadWriteMany (rwx) : More than one node can mount a volume for both read and write access
+ReadOnlyMany (rox) : More than one node can mount the volume for readonly access
+
+Static Provisionning Workflow : 
+Define a pv -> then define a pvc -> then define volume in pod spec:
+
+Storage Class : api object
+--------------------------
+Define tiers/classes of storage 
+Enables Dynamic provisioning 
+define infrastracture specific parameters
+Reclaim policy 
+
+Create a StorageClass -> PersistentVolumeClaim -> Define Volume in pod Spec
+the PersistenVolume a pod is created automaticaly. 
+
+II) Configuration as Data-Environment variables, Secrets and ConfigMaps 
+_______________________________________________________________________
+
+Configuring applications in pods using : 
+* Command Line Arguments
+* Environment variables 
+* ConfigMaps 
+
+Two types on environment varibles inside pods:
+- User defined : 
+   Pod Spec for each container
+   Defined inside the container
+   Defined in name/value or valueFrom 
+- System defined 
+  Names of all services available at the time the pod was created 
+
+Reagardless the type of environment var, they are defined at container startup and 
+cannot be updated once the pod is created 
+
+Secrets: 
+--------
+Store sensitive information as Objects
+Retrieve for later use
+Passwords, API tokens, keys and Certificates 
+Safer and more flexible configurations 
+
+Properties of secrets: 
+base64 encoded, there are not encrypted => Encryption can be configured 
+secrets are namespaced 
+Unavailable secrets will prevent a pod from starting up 
+
+there are three types of secrets in k8s : 
+Docker registry
+generic 
+TLS 
+
+ConfigMaps: 
+-----------
+Key valye pairs exposed into a pod used application configuration settigns 
+Definig application or envirnment specific settings 
+Decouple application and Pod configuratoins 
+Maximizing our container image's portability
+Environment Variables or files 
+
+ConfigMaps vs Environment variables: 
+ConfigMaps can be updated, environment varibales can't
+
+III) Managing and controlling the kubernetes Scheduler 
+______________________________________________________
+
+Scheduling in K8s: 
+------------------
+Selecting a node to start a pod on (kube-scheduler by default)
+the scheduling is based on : 
+Resources and policy
+
+Setting requests in pod spec, will cause the scheduler to find a node to fit the workload/pod 
+resources are guarantees : 
+CPU 
+Memory
+
+Three way to control Sheduling
+Node selector (using labels)
+Affinity (affinity, anti-affinity, ...)
+Taint and tolerations
+Node cordoning 
+Manuel scheduling 
+
+Node Selector:
+----------------
+* NodeSelector - uses labels on nodes to assign pods to nodes using 
+* Affinity and anti-affinity:
+- nodeAffinity - uses lables on nodes to make a scheduling decision with matchExpressions, this allows more complexe configuration
+requiredDuringSchedulingIgnoreDuringExecution
+preferredDuringschedulingIgnoredDuringExection
+- podAffinity -Schedule pods onto the same node, zone as some other pod
+- podAntiAffinitt - Scheduler pods onto the different node, zone as some other pod 
+
+Taints and Tolerations : 
+------------------------
+* Taints - ability to control which pods are scheduled to nodes 
+* Tolerations - allows a pod to ignore a taint and be scheduled as normal on tainted nodes 
+
+Node Cordoning: 
+---------------
+Marks a node as unschedulable
+Prevents new pods from being scheduled to that node
+Does not affect any exising pods on the node
+This is useful as a preparatory step before a node reboot or maintenance 
+#> kubectl cordon <nodeName>
+if u want to gracefully evict ur pods from a node 
+#> kubectl drain <nodeNmae> --ignore-daemonSets
+
+Manually Scheduling a Pod:
+-------------------------
+
+Scheduler populates nodeName but, 
+if you specify nodeName in ur pod definition the Pod will be started on that node
+caution: Node's name must exist
+If u schedule a pod manually, it will override other strategies (like if u choose a cordoned node, the pode will be created on it anyway)

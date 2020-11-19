@@ -1,0 +1,95 @@
+I) Kubernetes networking fundamentals
+_____________________________________
+Kubernetes networking model
+Network topology
+Pod networking internals
+Container network interface (cni)
+Cluster dns 
+
+* K8s networking model: 
+-----------------------
+
+All pods can communicate with each other on all nodes
+Agents on a node can communicate with all pods on that node
+No Network Address Translation is needed (no NAT)
+
+* K8s Network topology : 
+------------------------
+Node Network : Nodes must have reachebility between them 
+Pod network : each pod have a single ip @ asigned to it: these Ips cloud be from the node network, but normaly they come from a dedicated pool of IPs called the PodCIDR
+Cluster Network : used by services using the cluster ip service type. 
+
+* Pod Networking internals :
+----------------------------
+Containers that are in the same pod, communicate through localhost network 
+Pods within a node will user an interface that's atached to a local software bridge or tunnel interface
+Pod in different node will communicate using their real ip addresses, the network between those nodes must be 
+able to facilitate for pods to do so, And this can be done either by layer 2 or 3 
+
+* Container Network Interface - CNI :
+-------------------------------------
+to learn more about container network interface cni : 
+https://kubernetes.io/docs/concepts/cluster-administration/networking/
+
+* Cluster DNS : 
+---------------
+DNS is availabe as a service in a cluster 
+Pods are configured to use this DNS 
+DNS records,  
+  Services -A/AAAA records
+  Namespaces - subdomains
+        
+for more information : https://coredns.io/manual/toc
+
+II)Configuring and Managing application access with Services
+____________________________________________________________
+
+Understanding Services
+types of services
+Service network internals
+Service discovery
+
+* Understanding services : 
+-------------------------
+Services provide persistent endpoint access for clients
+Adds persistency to the ephemerality of Pods
+Networking abstraction providing perstent virtual IP and DNS 
+Load balances to the backend Pods
+Automatically updated during pod controller operations 
+
+- How do the services work ? 
+Services match pods using Labels and Selectors 
+Creates and registers EndPoints in the Service
+Implemented in the kube-proxy on the Node in iptables 
+
+* Sevice Types:
+----------------
+ClusterIp
+NodePort
+LoadBalancer
+
+* Service Discovery
+-------------------
+Infrastracture independence
+Static configuration
+ExternalName
+Headles
+Without Selectors
+
+III) Configuring and managing applcaition access with ingress  
+_____________________________________________________________
+
+Ingress overview and architecture
+ . Ingress
+ . ingress Controller
+Common use cases 
+
+* ingress Architecture: ingress object <-> ingress controller
+
+In api Object : 
+Define rules for external access to Services
+Load balancing to EndPoints
+Name-based virtual hosts
+Path-based routing (choose a service based to URL path)
+gives the ability to revarege TLS/SSL termination
+

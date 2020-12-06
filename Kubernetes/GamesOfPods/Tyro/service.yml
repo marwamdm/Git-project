@@ -1,0 +1,21 @@
+##########################################################
+# Creating the Jekyll Service as specified in the game   #
+# @autor Desire NTAMBIYE (desire.ntambiye@capgemini.com) #
+##########################################################
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: jekyll
+  labels:
+    run: jekyll
+  namespace: development
+spec:
+  selector:
+    run: jekyll
+  type: NodePort
+  ports:
+  - port: 8080
+    targetPort: 4000
+    nodePort: 30097
+    protocol: TCP

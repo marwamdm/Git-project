@@ -1,0 +1,16 @@
+##########################################################
+# Creating Persistent volume for Jekyll the application  #
+# @autor Desire NTAMBIYE (desire.ntambiye@capgemini.com) #
+##########################################################
+
+apiVersion : v1 
+kind : PersistentVolume
+metadata: 
+  name : jekyll-site
+spec: 
+  accessModes: 
+    - readWriteMany
+  capacity: 
+    storage: 1Gi 
+  hostPath: 
+    path: /Jekyll

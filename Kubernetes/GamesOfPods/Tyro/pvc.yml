@@ -1,0 +1,16 @@
+##########################################################
+# Creating Persistent volume Claim for Jekyll the app    #
+# @autor Desire NTAMBIYE (desire.ntambiye@capgemini.com) #
+##########################################################
+
+apiVersion : v1
+kind : PersistentVolumeClaim
+metadata : 
+  name : jekyll-site
+  namespace: development
+spec: 
+  accessModes:
+    - ReadWriteMany
+  resources: 
+    requests: 
+      storage: 1Gi

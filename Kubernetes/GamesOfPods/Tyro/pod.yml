@@ -1,0 +1,32 @@
+
+##########################################################
+# Creating the Jekyll pod as specified                   #
+# @autor Desire NTAMBIYE (desire.ntambiye@capgemini.com) #
+##########################################################
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: jekyll
+  namespace: development
+  labels:
+    name: jekyll
+    run: jekyll
+spec:
+  initContainers:
+  - name: copy-jekyll-site
+    image: kodekloud/jekyll
+    command: ["jekyll","new","/site"]
+    volumeMounts:
+      - mountPath: /site
+        name: site
+  containers:
+  - name: jekyll
+    image: kodekloud/jekyll-serve
+    volumeMounts:
+      - mountPath: /site
+        name: site
+  volumes:
+    - name: site
+      persistentVolumeClaim:
+        claimName: jekyll-site

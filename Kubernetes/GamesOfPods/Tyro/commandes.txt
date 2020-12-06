@@ -1,0 +1,34 @@
+##########################################################
+# Commandes and implicite creattions                     #
+# @autor Desire NTAMBIYE (desire.ntambiye@capgemini.com) #
+##########################################################
+
+kubectl get nodes
+
+#### Create admin-user ###
+kubectl create role developer-role --resource=pods,svc,pvc --verb="*" --namespace=development
+
+############ Create rolebinding ###################
+kubectl create rolebinding developer-rolebinding -n development --role=developer-role --user=drogo
+
+kubectl config set-credentials drogo --client-certificate=/root/drogo.crt --client-key=/root/drogo.key
+
+kubectl config set-context developer --cluster=kubernetes --user=drogo
+
+kubectl config use-context developer
+
+#### use vim to create the pvc.yml file (there is no neeed to create pv.yml, it is already created)
+kubectl create -f pvc.yml
+
+kubectl get pvc -n development 
+
+#### use vim to create the pod.yml file
+kubectl create -f pod.yml
+
+kubectl get pods -n development
+
+#### use Vim to create the service.yml 
+kubectl create -f service.yml 
+
+kubeclt get service -n development
+
